@@ -106,12 +106,12 @@ class SqlQueries:
     # STAGING TABLES
     staging_template = ("""
         COPY {} FROM {}
-        ACCESS_KEY_ID '{}'
-        SECRET_ACCESS_KEY '{}'
-        format as json '{}'
-        ACCEPTINVCHARS AS '^'
+        ACCESS_KEY_ID {}
+        SECRET_ACCESS_KEY {}
+        format as json {}
+        ACCEPTINVCHARS AS ^
         STATUPDATE ON
-        region 'us-west-2';
+        region us-west-2;
     """)
 
     # FINAL TABLES

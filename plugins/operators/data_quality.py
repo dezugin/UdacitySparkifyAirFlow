@@ -23,10 +23,10 @@ class DataQualityOperator(BaseOperator):
         
         for count, query in enumerate(q.null_verify_list):
             self.log.info(f'Verifying null in table {count} ')
-            nulls = redshift.run(DataQualityOperator.query)
+            nulls = redshift.run(query)
             self.log.info(f'Table {count} has {nulls}')
         for count, query in enumerate(q.count_verify_list):
             self.log.info(f'Verifying counts in table {count}')
-            counts = redshift.run(DataQualityOperator.query)
+            counts = redshift.run(query)
             self.log.info(f'Table {count} has {counts}')
         self.log.info('DataQualityOperator finished')

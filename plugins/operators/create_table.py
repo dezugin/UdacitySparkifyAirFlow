@@ -24,6 +24,6 @@ class CreateTableOperator(BaseOperator):
         redshift = PostgresHook(postgres_conn_id=self.redshift_conn_id)
         self.log.info("Redshift connection initialized.")
         self.log.info("Running query")
-        query = self.query
-        redshift.run(CreateTableOperator.query)
+        self.log.info("NEW ATTEMPT0")
+        redshift.run(self.query)
         self.log.info('CreateTableOperator finished')

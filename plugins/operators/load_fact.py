@@ -24,6 +24,5 @@ class LoadFactOperator(BaseOperator):
         redshift = PostgresHook(postgres_conn_id=self.redshift_conn_id)
         self.log.info("Redshift connection initialized.")
         self.log.info("Running query")
-        query = self.query
-        redshift.run(LoadFactOperator.query)
+        redshift.run(self.query)
         self.log.info('LoadFactOperator finished')
