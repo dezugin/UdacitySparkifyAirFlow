@@ -15,7 +15,7 @@ class CreateTableOperator(BaseOperator):
 
         super(CreateTableOperator, self).__init__(*args, **kwargs)
         # params map
-        self.redshift_conn_id= redshift_conn_id=""
+        self.redshift_conn_id = redshift_conn_id
         self.query = query
 
     def execute(self, context):
