@@ -36,6 +36,7 @@ class StageToRedshiftOperator(BaseOperator):
         redshift.run("DELETE FROM {}".format(self.target_table))
 
         self.log.info("Preparing for JSON input data")
+        query = self.query
         formatted_sql = StageToRedshiftOperator.query.format(
             self.target_table,
             self.s3_path,
