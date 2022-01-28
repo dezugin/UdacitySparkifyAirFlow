@@ -11,18 +11,23 @@ class LoadFactOperator(BaseOperator):
                  # operators params
                  redshift_conn_id="",
                  query="",
+                 table="",
                  *args, **kwargs):
 
         super(LoadFactOperator, self).__init__(*args, **kwargs)
         # params map
         self.redshift_conn_id = redshift_conn_id
         self.query = query
+        self.table = table
     
     def execute(self, context):
         self.log.info('LoadFactOperator starting')
         self.log.info("Initializing Redshift connection...")
         redshift = PostgresHook(postgres_conn_id=self.redshift_conn_id)
         self.log.info("Redshift connection initialized.")
+        sql = LoadFactOperator.query.format(
+            self.table
+        )
         self.log.info("Running query")
-        redshift.run(self.query)
+        redshift.run(sql)
         self.log.info('LoadFactOperator finished')

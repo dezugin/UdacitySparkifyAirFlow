@@ -38,7 +38,7 @@ class StageToRedshiftOperator(BaseOperator):
 
         self.log.info("Preparing for JSON input data")
         sql_query = self.query
-        formatted_sql = sql_query.format(
+        formatted_sql = StageToRedShiftOperator.sql_query.format(
             self.target_table,
             self.s3_path,
             credentials.access_key,

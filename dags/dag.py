@@ -100,35 +100,40 @@ load_songplays_table = LoadFactOperator(
     task_id='Load_songplays_fact_table',
     dag=dag,
     redshift_conn_id="redshift",
-    query = q.songplay_table_insert
+    query = q.songplay_table_insert,
+    table = 'public.songplays'
 )
 
 load_user_dimension_table = LoadDimensionOperator(
     task_id='Load_user_dim_table',
     dag=dag,
     redshift_conn_id="redshift",
-    query = q.user_table_insert
+    query = q.user_table_insert,
+    table = 'public.user'
 )
 
 load_song_dimension_table = LoadDimensionOperator(
     task_id='Load_song_dim_table',
     dag=dag,
     redshift_conn_id="redshift",
-    query = q.song_table_insert
+    query = q.song_table_insert,
+    table = 'public.song'
 )
 
 load_artist_dimension_table = LoadDimensionOperator(
     task_id='Load_artist_dim_table',
     dag=dag,
     redshift_conn_id="redshift",
-    query = q.artist_table_insert
+    query = q.artist_table_insert,
+    table = 'public.artist'
 )
 
 load_time_dimension_table = LoadDimensionOperator(
     task_id='Load_time_dim_table',
     dag=dag,
     redshift_conn_id="redshift",
-    query = q.time_table_insert
+    query = q.time_table_insert,
+    table = 'public.time'
 )
 
 run_quality_checks = DataQualityOperator(
@@ -143,14 +148,10 @@ start_operator >>create_staging_events_table
 create_staging_songs_table >> stage_songs_to_redshift
 create_staging_events_table >> stage_events_to_redshift
 stage_songs_to_redshift >> load_songplays_table
-stage_songs_to_redshift >> load_time_dimension_table
 stage_songs_to_redshift >> load_artist_dimension_table
 stage_songs_to_redshift >> load_song_dimension_table
-stage_songs_to_redshift >> load_user_dimension_table
 stage_events_to_redshift >> load_songplays_table
 stage_events_to_redshift >> load_time_dimension_table
-stage_events_to_redshift >> load_artist_dimension_table
-stage_events_to_redshift >> load_song_dimension_table
 stage_events_to_redshift >> load_user_dimension_table
 create_songplays_table >> load_songplays_table
 create_time_table >> load_time_dimension_table

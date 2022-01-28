@@ -2,7 +2,7 @@ class SqlQueries:
     # CREATE TABLES
 
     staging_events_table_create= ("""
-        CREATE TABLE IF NOT EXISTS staging_events (
+        CREATE TABLE IF NOT EXISTS public.staging_events (
                     event_id    BIGINT IDENTITY(0,1)    NOT NULL,
                     artist      VARCHAR                 NULL,
                     auth        VARCHAR                 NULL,
@@ -26,7 +26,7 @@ class SqlQueries:
     """)
 
     staging_songs_table_create = ("""
-        CREATE TABLE IF NOT EXISTS staging_songs (
+        CREATE TABLE IF NOT EXISTS public.staging_songs (
                     num_songs           INTEGER         NULL,
                     artist_id           VARCHAR         NOT NULL SORTKEY DISTKEY,
                     artist_latitude     VARCHAR         NULL,
@@ -41,7 +41,7 @@ class SqlQueries:
     """)
 
     songplay_table_create = ("""
-        CREATE TABLE IF NOT EXISTS songplays (
+        CREATE TABLE IF NOT EXISTS public.songplays (
                     songplay_id INTEGER IDENTITY(0,1)   NOT NULL SORTKEY,
                     start_time  TIMESTAMP               NOT NULL,
                     user_id     VARCHAR(50)             NOT NULL DISTKEY,
@@ -55,7 +55,7 @@ class SqlQueries:
     """)
 
     user_table_create = ("""
-        CREATE TABLE IF NOT EXISTS users (
+        CREATE TABLE IF NOT EXISTS public.users (
                     user_id     INTEGER                 NOT NULL SORTKEY,
                     first_name  VARCHAR(50)             NULL,
                     last_name   VARCHAR(80)             NULL,
@@ -65,7 +65,7 @@ class SqlQueries:
     """)
 
     song_table_create = ("""
-        CREATE TABLE IF NOT EXISTS songs (
+        CREATE TABLE IF NOT EXISTS public.songs (
                     song_id     VARCHAR(50)             NOT NULL SORTKEY,
                     title       VARCHAR(500)           NOT NULL,
                     artist_id   VARCHAR(50)             NOT NULL,
@@ -75,7 +75,7 @@ class SqlQueries:
     """)
 
     artist_table_create = ("""
-        CREATE TABLE IF NOT EXISTS artists (
+        CREATE TABLE IF NOT EXISTS public.artists (
                     artist_id   VARCHAR(50)             NOT NULL SORTKEY,
                     name        VARCHAR(500)           NULL,
                     location    VARCHAR(500)           NULL,
@@ -85,7 +85,7 @@ class SqlQueries:
     """)
 
     time_table_create = ("""
-        CREATE TABLE IF NOT EXISTS time (
+        CREATE TABLE IF NOT EXISTS public.time (
                     start_time  TIMESTAMP               NOT NULL SORTKEY,
                     hour        SMALLINT                NULL,
                     day         SMALLINT                NULL,
@@ -111,7 +111,7 @@ class SqlQueries:
     # FINAL TABLES
 
     songplay_table_insert = ("""
-        INSERT INTO songplays (             start_time,
+        INSERT INTO {} (             start_time,
                                             user_id,
                                             level,
                                             song_id,
@@ -128,14 +128,14 @@ class SqlQueries:
                 se.sessionId                AS session_id,
                 se.location                 AS location,
                 se.userAgent                AS user_agent
-        FROM staging_events AS se
-        JOIN staging_songs AS ss
+        FROM public.staging_events AS se
+        JOIN public.staging_songs AS ss
             ON (se.artist = ss.artist_name)
         WHERE se.page = 'NextSong';
     """)
 
     user_table_insert = ("""
-        INSERT INTO users (                 user_id,
+        INSERT INTO {} (                 user_id,
                                             first_name,
                                             last_name,
                                             gender,
@@ -145,12 +145,12 @@ class SqlQueries:
                 se.lastName                 AS last_name,
                 se.gender                   AS gender,
                 se.level                    AS level
-        FROM staging_events AS se
+        FROM public.staging_events AS se
         WHERE se.page = 'NextSong';
     """)
 
     song_table_insert = ("""
-        INSERT INTO songs (                 song_id,
+        INSERT INTO {} (                 song_id,
                                             title,
                                             artist_id,
                                             year,
@@ -160,11 +160,11 @@ class SqlQueries:
                 ss.artist_id                AS artist_id,
                 ss.year                     AS year,
                 ss.duration                 AS duration
-        FROM staging_songs AS ss;
+        FROM public.staging_songs AS ss;
     """)
 
     artist_table_insert = ("""
-        INSERT INTO artists (               artist_id,
+        INSERT INTO {} (               artist_id,
                                             name,
                                             location,
                                             latitude,
@@ -174,11 +174,11 @@ class SqlQueries:
                 ss.artist_location          AS location,
                 ss.artist_latitude          AS latitude,
                 ss.artist_longitude         AS longitude
-        FROM staging_songs AS ss;
+        FROM public.staging_songs AS ss;
     """)
 
     time_table_insert = ("""
-        INSERT INTO time (                  start_time,
+        INSERT INTO {} (                  start_time,
                                             hour,
                                             day,
                                             week,
@@ -193,7 +193,7 @@ class SqlQueries:
                 EXTRACT(month FROM start_time)   AS month,
                 EXTRACT(year FROM start_time)    AS year,
                 EXTRACT(week FROM start_time)    AS weekday
-        FROM    staging_events                   AS se
+        FROM    public.staging_events                   AS se
         WHERE se.page = 'NextSong';
     """)
     # Data quality verification queries:
