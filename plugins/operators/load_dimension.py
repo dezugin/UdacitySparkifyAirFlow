@@ -15,7 +15,7 @@ class LoadDimensionOperator(BaseOperator):
 
         super(LoadDimensionOperator, self).__init__(*args, **kwargs)
         # params map
-        self.redshift_conn_id= redshift_conn_id=""
+        self.redshift_conn_id = redshift_conn_id
         self.query = query
 
     def execute(self, context):

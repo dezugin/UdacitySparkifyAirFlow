@@ -2,7 +2,6 @@ class SqlQueries:
     # CREATE TABLES
 
     staging_events_table_create= ("""
-        DROP TABLE IF EXISTS staging_events;
         CREATE TABLE IF NOT EXISTS staging_events (
                     event_id    BIGINT IDENTITY(0,1)    NOT NULL,
                     artist      VARCHAR                 NULL,
@@ -27,7 +26,6 @@ class SqlQueries:
     """)
 
     staging_songs_table_create = ("""
-        DROP TABLE IF EXISTS staging_songs;
         CREATE TABLE IF NOT EXISTS staging_songs (
                     num_songs           INTEGER         NULL,
                     artist_id           VARCHAR         NOT NULL SORTKEY DISTKEY,
@@ -43,7 +41,6 @@ class SqlQueries:
     """)
 
     songplay_table_create = ("""
-        DROP TABLE IF EXISTS songplays;
         CREATE TABLE IF NOT EXISTS songplays (
                     songplay_id INTEGER IDENTITY(0,1)   NOT NULL SORTKEY,
                     start_time  TIMESTAMP               NOT NULL,
@@ -58,7 +55,6 @@ class SqlQueries:
     """)
 
     user_table_create = ("""
-        DROP TABLE IF EXISTS users;
         CREATE TABLE IF NOT EXISTS users (
                     user_id     INTEGER                 NOT NULL SORTKEY,
                     first_name  VARCHAR(50)             NULL,
@@ -69,7 +65,6 @@ class SqlQueries:
     """)
 
     song_table_create = ("""
-        DROP TABLE IF EXISTS songs;
         CREATE TABLE IF NOT EXISTS songs (
                     song_id     VARCHAR(50)             NOT NULL SORTKEY,
                     title       VARCHAR(500)           NOT NULL,
@@ -80,7 +75,6 @@ class SqlQueries:
     """)
 
     artist_table_create = ("""
-        DROP TABLE IF EXISTS artists;
         CREATE TABLE IF NOT EXISTS artists (
                     artist_id   VARCHAR(50)             NOT NULL SORTKEY,
                     name        VARCHAR(500)           NULL,
@@ -91,7 +85,6 @@ class SqlQueries:
     """)
 
     time_table_create = ("""
-        DROP TABLE IF EXISTS time;
         CREATE TABLE IF NOT EXISTS time (
                     start_time  TIMESTAMP               NOT NULL SORTKEY,
                     hour        SMALLINT                NULL,
@@ -105,13 +98,14 @@ class SqlQueries:
 
     # STAGING TABLES
     staging_template = ("""
-        COPY {} FROM {}
-        ACCESS_KEY_ID {}
-        SECRET_ACCESS_KEY {}
-        format as json {}
-        ACCEPTINVCHARS AS ^
-        STATUPDATE ON
-        region us-west-2;
+        COPY {} 
+        FROM '{}'
+        ACCESS_KEY_ID '{}'
+        SECRET_ACCESS_KEY '{}'
+        json '{}'
+        region 'us-west-2'
+        ACCEPTINVCHARS AS '^'
+        STATUPDATE ON;
     """)
 
     # FINAL TABLES
