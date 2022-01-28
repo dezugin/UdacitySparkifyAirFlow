@@ -33,8 +33,8 @@ class StageToRedshiftOperator(BaseOperator):
         credentials = aws_hook.get_credentials()
         redshift = PostgresHook(postgres_conn_id=self.redshift_conn_id)
         self.log.info("Redshift connection initialized.")
-        #self.log.info("Deleting data from Redshift target table...")
-        #redshift.run("DELETE FROM {}".format(self.target_table))
+        self.log.info("Deleting data from Redshift target table...")
+        redshift.run("DELETE FROM {}".format(self.target_table))
 
         self.log.info("Preparing for JSON input data")
         sql_query = self.query

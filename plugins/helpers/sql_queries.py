@@ -105,7 +105,7 @@ class SqlQueries:
         json '{}'
         region 'us-west-2'
         ACCEPTINVCHARS AS '^'
-        STATUPDATE ON;
+        STATUPDATE ON;        
     """)
 
     # FINAL TABLES
